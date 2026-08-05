@@ -16,6 +16,6 @@ This project uses **Machine Learning** to predict housing prices and provide inv
     - Comparative Market Analysis (CMA) with Narratives  
 
     **Developer:** 👨‍💻 Akash Pathrapalli  
-    🔗 [LinkedIn](https://www.linkedin.com/in/akash-pathrapalli/)  
+    🔗 [LinkedIn](https://www.linkedin.com/in/akash-pathrapalli-897b3b354/)  
 
     © 2025 AI Real Estate Valuation System | All Rights Reserved
