@@ -134,30 +134,41 @@ if page == "🏠 Home":
         'TotRmsAbvGrd': [TotRmsAbvGrd],
         'LotArea': [LotArea]
     })
-# Align features with training data
-input_aligned = pd.DataFrame(
-    np.zeros((1, len(feature_names))),
-    columns=feature_names,
-    dtype=np.float64
-)
+    # Prepare raw input
+    input_data = pd.DataFrame({
+        'GrLivArea': [GrLivArea],
+        'OverallQual': [OverallQual],
+        'OverallCond': [OverallCond],
+        'YearBuilt': [YearBuilt],
+        'GarageCars': [GarageCars],
+        'FullBath': [FullBath],
+        'BedroomAbvGr': [BedroomAbvGr],
+        'TotRmsAbvGrd': [TotRmsAbvGrd],
+        'LotArea': [LotArea]
+    })
 
-for col in input_data.columns:
-    if col in feature_names:
-        input_aligned.loc[0, col] = float(input_data.loc[0, col])
+    # Align features with training data
+    input_aligned = pd.DataFrame(
+        np.zeros((1, len(feature_names))),
+        columns=feature_names,
+        dtype=np.float64
+    )
 
-# Ensure all columns are numeric
-input_aligned = input_aligned.apply(pd.to_numeric, errors="coerce").fillna(0)
+    for col in input_data.columns:
+        if col in feature_names:
+            input_aligned.loc[0, col] = float(input_data.loc[0, col])
 
-if st.button("🔮 Predict House Price"):
-    try:
-        prediction = model.predict(input_aligned)[0]
+    input_aligned = input_aligned.apply(pd.to_numeric, errors="coerce").fillna(0)
 
-        st.session_state.history.append(
-            {**input_data.iloc[0].to_dict(), "PredictedPrice": prediction}
-        )
+    if st.button("🔮 Predict House Price"):
+        try:
+            prediction = model.predict(input_aligned)[0]
 
-        st.markdown(
-            f"""
+            st.session_state.history.append(
+                {**input_data.iloc[0].to_dict(), "PredictedPrice": prediction}
+            )
+
+            st.markdown(f"""
             <div style='background-color:#e6ffe6;
                         padding:20px;
                         border-radius:10px;
@@ -166,28 +177,22 @@ if st.button("🔮 Predict House Price"):
                     💰 Estimated House Price: ${prediction:,.2f}
                 </h2>
             </div>
-            """,
-            unsafe_allow_html=True
-        )
+            """, unsafe_allow_html=True)
 
-        csv_buffer = io.StringIO()
-        pd.DataFrame(
-            [input_data.iloc[0].to_dict() | {"PredictedPrice": prediction}]
-        ).to_csv(csv_buffer, index=False)
+            csv_buffer = io.StringIO()
+            pd.DataFrame(
+                [input_data.iloc[0].to_dict() | {"PredictedPrice": prediction}]
+            ).to_csv(csv_buffer, index=False)
 
-        st.download_button(
-            "📥 Download Prediction (CSV)",
-            data=csv_buffer.getvalue(),
-            file_name="prediction.csv",
-            mime="text/csv"
-        )
+            st.download_button(
+                "📥 Download Prediction (CSV)",
+                data=csv_buffer.getvalue(),
+                file_name="prediction.csv",
+                mime="text/csv"
+            )
 
-    except Exception as e:
-        st.error(f"Prediction failed: {e}")
-        st.write("Input dtypes:")
-        st.write(input_aligned.dtypes)
-        st.write("Input data:")
-        st.dataframe(input_aligned)
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
 # -----------------------------
 # Page 2: Prediction History
 # -----------------------------

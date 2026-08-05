@@ -35,12 +35,22 @@ for col in df.select_dtypes(include=['object']).columns:
 print("✅ Missing values handled successfully!")
 print(df.info())
 
-# If dataset has categorical columns (like location), convert them into numbers
-df = pd.get_dummies(df, drop_first=True)
+# Select only the features used in the Streamlit app
+selected_features = [
+    "GrLivArea",
+    "OverallQual",
+    "OverallCond",
+    "YearBuilt",
+    "GarageCars",
+    "FullBath",
+    "BedroomAbvGr",
+    "TotRmsAbvGrd",
+    "LotArea"
+]
 
-# Split Features (X) and Target (y)
-X = df.drop('SalePrice', axis=1)   # Features
-y = df['SalePrice']                # Target
+# Features and target
+X = df[selected_features]
+y = df["SalePrice"]
 
 import seaborn as sns
 import matplotlib.pyplot as plt
