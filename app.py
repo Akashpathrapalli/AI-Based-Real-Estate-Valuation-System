@@ -1,6 +1,10 @@
 import streamlit as st
+import pandas as pd
+import numpy as np
+import pickle
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+from statsmodels.tsa.arima.model import ARIMA
 
-st.set_page_config(page_title="Test")
-
-st.title("✅ Streamlit Deployment Test")
-st.success("If you can see this, deployment is working!")
+st.title("Imports OK")
