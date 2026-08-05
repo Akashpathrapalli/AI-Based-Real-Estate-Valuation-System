@@ -1,15 +1,27 @@
 import streamlit as st
+# -----------------------------
+# Page Config
+# -----------------------------
+st.set_page_config(
+    page_title="AI Real Estate Valuation",
+    layout="wide",
+    page_icon="🏡"
+)
+
+if "history" not in st.session_state:
+    st.session_state.history = []
+
 import pandas as pd
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 import seaborn as sns
 import io
-import os
 from sklearn.linear_model import LinearRegression
 from statsmodels.tsa.arima.model import ARIMA
 import os
-os.environ["OPENAI_API_KEY"] = "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"
+
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 # -----------------------------
 # Load model and feature names
@@ -66,17 +78,6 @@ section[data-testid="stSidebar"] {
 """, unsafe_allow_html=True)
 
 
-# -----------------------------
-# Page Config
-# -----------------------------
-st.set_page_config(
-    page_title="AI Real Estate Valuation",
-    layout="wide",
-    page_icon="🏡"
-)
-
-if "history" not in st.session_state:
-    st.session_state.history = []
 
 # -----------------------------
 # Sidebar Navigation
